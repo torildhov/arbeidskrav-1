@@ -106,6 +106,39 @@
         damage: 200,
         alive: true,
       };
+
+      //---------------OPPGAVE 1--------------
+
+      /*Når brukeren trykker på en av heltene, skal helten angripe dragen.
+      - Det skal komme en alert hvor det står: "(Heltens name)" har gjort (heltens damage) skade på (Dragens name)!"
+      - Dragens liv (currentHP) skal bli trukket med heltens damage, avhengig av hvilken helt den ble angrepet av.
+      - Dragens currentHP blir oppdatert i arrayet
+
+      Påkrevde teknikker: alert, function, onclick/eventListener, manipulering av array-objekter*/
+
+      document.querySelector(".healer").addEventListener("click", function () {
+        heroAttack(heroesArray[0]);
+      });
+
+      document.querySelector(".archer").addEventListener("click", function () {
+        heroAttack(heroesArray[1]);
+      });
+
+      document.querySelector(".warrior").addEventListener("click", function () {
+        heroAttack(heroesArray[2]);
+      });
+
+      function heroAttack(hero) {
+        alert(`${hero.name} har gjort ${hero.damage} skade på ${dragonObject.name}!`)
+        dragonObject.currentHP -= hero.damage;
+        updateDragonHealthText();
+      }
+          
+      function updateDragonHealthText(){
+        let dragonHealthTxt = document.querySelector(".dragon-health-txt");
+        dragonHealthTxt.innerHTML = `${dragonObject.maxHP} / ${dragonObject.currentHP} HP`;
+      }
+
     </script>
   </body>
 </html>
