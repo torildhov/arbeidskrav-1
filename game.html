@@ -179,43 +179,35 @@
         });
 
         console.log(`${randomHero.name} now has ${randomHero.currentHP} HP`);
+
+        heroesArray.forEach((hero) => {
+          if (hero.currentHP <= 0) {
+            hero.alive = false;
+            alert(`${hero.name} er død!`);
+
+            const heroEl = document.querySelector(`.hero`);
+            if (heroEl) {
+              heroEl.remove();
+            }
+          }
+        });
+
         checkGameState();
       }
 
       //-------------------------
-    function checkGameState() {
+      function checkGameState() {
+        const allHeroesDead = heroesArray.every((hero) => hero.alive === false);
 
-  heroesArray.forEach(hero => {
-    if (hero.currentHP <= 0) {
+        if (allHeroesDead && dragonObject.currentHP > 0) {
+          alert(`Spillet er tapt! ${dragon.name} har vunnet!`);
+        } else if (dragonObject.currentHP <= 0) {
+          const dragonEl = document.querySelector(".dragon");
+          dragonEl.remove();
 
-      alert(`${hero.name} er død!`);
-      
-      const heroEl = document.querySelector(`.${hero.name}`);
-      if (heroEl) {
-        heroEl.remove();
+          alert("Gratulerer, du har vunnet spillet!");
+        }
       }
-      
-      document.querySelector(`#${hero.name}-health`).remove();
-
-      hero.alive = false;
-    }
-  });
-
-  const allHeroesDead = heroesArray.every(hero => hero.alive === false);
-
-  if (allHeroesDead && dragonObject.currentHP > 0) {
-    alert(`Spillet er tapt! ${dragon.name} har vunnet!`);
-  }
-
-  else if (dragonObject.currentHP <= 0) {
-
-    const dragonEl = document.querySelector('.dragon');
-    dragonEl.remove();
-
-    alert('Gratulerer, du har vunnet spillet!');
-  }
-
-}
     </script>
   </body>
 </html>
