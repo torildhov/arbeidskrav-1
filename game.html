@@ -154,7 +154,13 @@
           let randomNumber = Math.floor(Math.random() * livingHeroes.length);
           let targetHero = livingHeroes[randomNumber];
 
-          alert(``)
+          alert(`${dragonObject.name} har angrepet ${targetHero.name}`);
+          
+          targetHero.currentHP -= dragonObject.damage;
+
+          console.log(`${targetHero.name} har nå ${targetHero.currentHP}`);
+
+          
         }
       }
 
