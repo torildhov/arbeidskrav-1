@@ -106,7 +106,7 @@
         damage: 200,
         alive: true,
       };
-      //ONCLICK OG SELECTER HELTENE
+
       document.querySelector(".healer").addEventListener("click", function () {
         heroAttack(heroesArray[0]);
       });
@@ -119,100 +119,33 @@
         heroAttack(heroesArray[2]);
       });
 
-      //OPPDATERER NAVNENE TIL DRAGEN OG HELTENE
-       const healerNameTxt = document.getElementById("healer-name-txt");
-        healerNameTxt.innerHTML = `${heroesArray[0].name}`;
+      document.getElementById
 
-        const archerNameTxt = document.getElementById("archer-name-txt");
-        archerNameTxt.innerHTML = `${heroesArray[1].name}`;
+      function heroAttack (hero) {
+        alert(`${hero.name} har fjort ${hero.damage} skade på ${dragonObject.name}!`);
 
-        const warriorNameTxt = document.getElementById("warrior-name-txt");
-        warriorNameTxt.innerHTML = `${heroesArray[2].name}`;
-
-        const dragonNameTxt = document.getElementById("dragon-name-txt");
-        dragonNameTxt.innerHTML = `${dragonObject.name}`;
-
-
-
-
-      function heroAttack(hero) {
-        alert(
-          `${hero.name} har gjort ${hero.damage} skade på ${dragonObject.name}!`
-        );
-        dragonObject.currentHP -= hero.damage;
+        dragonObject.currentHP -= hero.damage
 
         let dragonHealthTxt = document.querySelector(".dragon-health-txt");
         dragonHealthTxt.innerHTML = `${dragonObject.currentHP} / ${dragonObject.maxHP} HP`;
-       
+
         dragonAttack();
       }
-      
-      function dragonAttack(){
-        let livingHeroes = heroesArray.filter((hero) => hero.alive);
 
-        if(livingHeroes.length > 0){
-          let randomNumber = Math.floor(Math.random() * livingHeroes.length);
-          let targetHero = livingHeroes[randomNumber];
+      function dragonAttack() {
+        let livingHeroes = heroesArray.filter((hero) => hero.alive === true);
 
-          alert(``)
-        }
+        let randomHero = Math.floor(Math.random() * livingHeroes.length) + 0;
+
+        heroesArray[randomHero].currentHP -= dragonObject.damage;
+
+        alert(`${dragonObject.name} har angrepet ${heroesArray[randomHero].name}`);
+
+        console.log(`${heroesArray[randomHero].name} now has ${heroesArray[randomHero].currentHP} HP`);
       }
 
-      /*function dragonAttack() {
-        let livingHeroes = heroesArray.filter((hero) => hero.currentHP > 0);
-        if(livingHeroes.length > 0){
-          let randomHero =
-          livingHeroes[Math.floor(Math.random() * livingHeroes.length)];
 
-        alert(`${dragonObject.name} has attacked ${randomHero.name}!`);
 
-        randomHero.currentHP -= dragonObject.damage;
-
-        heroesArray.forEach((hero) => {
-          if (hero.name === randomHero.name) {
-            hero.currentHP = randomHero.currentHP;
-          }
-        });
-
-        console.log(`${randomHero.name} now has ${randomHero.currentHP} HP`);
-      
-
-        livingHeroes.forEach((hero) => {
-          if (randomHero.currentHP <= 0) {
-            
-            //const deadHeroName = heroesArray[index].name;
-            //alert(`${deadHeroName} er død!`);
-            hero.alive = false;
-
-            
-            const deadHeroImg = document.querySelector(`.img-container.${randomHero.name.toLowerCase()}`);
-              if(deadHeroImg) {
-                deadHeroImg.remove();
-              }
-            
-            
-            
-          }
-        });
-        }
-        
-        checkGameState();
-        
-      }*/
-
-      //-------------------------
-      function checkGameState() {
-        const allHeroesDead = heroesArray.every((hero) => hero.alive === false);
-
-        if (allHeroesDead && dragonObject.currentHP > 0) {
-          alert(`Spillet er tapt! ${dragonObject.name} har vunnet!`);
-        } else if (dragonObject.currentHP <= 0) {
-          const dragonEl = document.querySelector(".dragon");
-          dragonEl.remove();
-
-          alert("Gratulerer, du har vunnet spillet!");
-        }
-      }
     </script>
   </body>
 </html>
