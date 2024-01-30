@@ -120,20 +120,17 @@
       });
 
       //OPPDATERER NAVNENE TIL DRAGEN OG HELTENE
-       const healerNameTxt = document.getElementById("healer-name-txt");
-        healerNameTxt.innerHTML = `${heroesArray[0].name}`;
+      const healerNameTxt = document.getElementById("healer-name-txt");
+      healerNameTxt.innerHTML = `${heroesArray[0].name}`;
 
-        const archerNameTxt = document.getElementById("archer-name-txt");
-        archerNameTxt.innerHTML = `${heroesArray[1].name}`;
+      const archerNameTxt = document.getElementById("archer-name-txt");
+      archerNameTxt.innerHTML = `${heroesArray[1].name}`;
 
-        const warriorNameTxt = document.getElementById("warrior-name-txt");
-        warriorNameTxt.innerHTML = `${heroesArray[2].name}`;
+      const warriorNameTxt = document.getElementById("warrior-name-txt");
+      warriorNameTxt.innerHTML = `${heroesArray[2].name}`;
 
-        const dragonNameTxt = document.getElementById("dragon-name-txt");
-        dragonNameTxt.innerHTML = `${dragonObject.name}`;
-
-
-
+      const dragonNameTxt = document.getElementById("dragon-name-txt");
+      dragonNameTxt.innerHTML = `${dragonObject.name}`;
 
       function heroAttack(hero) {
         alert(
@@ -143,24 +140,49 @@
 
         let dragonHealthTxt = document.querySelector(".dragon-health-txt");
         dragonHealthTxt.innerHTML = `${dragonObject.currentHP} / ${dragonObject.maxHP} HP`;
-       
+
         dragonAttack();
       }
-      
-      function dragonAttack(){
+
+      function dragonAttack() {
         let livingHeroes = heroesArray.filter((hero) => hero.alive);
 
-        if(livingHeroes.length > 0){
+        if (livingHeroes.length > 0) {
           let randomNumber = Math.floor(Math.random() * livingHeroes.length);
           let targetHero = livingHeroes[randomNumber];
 
           alert(`${dragonObject.name} har angrepet ${targetHero.name}`);
-          
+
           targetHero.currentHP -= dragonObject.damage;
 
           console.log(`${targetHero.name} har nå ${targetHero.currentHP}`);
 
-          
+          if (targetHero.currentHP <= 0) {
+            targetHero.alive = false;
+
+            heroesArray.forEach((hero) => {
+              if (hero.alive === false) {
+                let heroImageClass;
+
+                switch (hero.name) {
+                  case "Henriette Healer":
+                    heroImageClass = "healer";
+                    break;
+                  case "Ariana archer":
+                    heroImageClass = "archer";
+                    break;
+                  case "Wyona Warrior":
+                    heroImageClass = "warrior";
+                    break;
+                }
+
+                let heroEl = document.querySelector(`.${heroImageClass}`);
+                if (heroEl) {
+                  heroEl.remove();
+                }
+              }
+            });
+          }
         }
       }
 
