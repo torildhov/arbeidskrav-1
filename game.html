@@ -106,7 +106,9 @@
         damage: 200,
         alive: true,
       };
-      //ONCLICK OG SELECTER HELTENE
+
+
+      //Henter inn heltene og gjør det mulig å klikke på heltene
       document.querySelector(".healer").addEventListener("click", function () {
         heroAttack(heroesArray[0]);
       });
@@ -119,7 +121,8 @@
         heroAttack(heroesArray[2]);
       });
 
-      //OPPDATERER NAVNENE TIL DRAGEN OG HELTENE
+
+      //Oppdatering av navnene til heltene og dragen
       const healerNameTxt = document.getElementById("healer-name-txt");
       healerNameTxt.innerHTML = `${heroesArray[0].name}`;
 
@@ -132,40 +135,65 @@
       const dragonNameTxt = document.getElementById("dragon-name-txt");
       dragonNameTxt.innerHTML = `${dragonObject.name}`;
 
+
+      //Helten som klikkes på angriper dragen
       function heroAttack(hero) {
         alert(
           `${hero.name} har gjort ${hero.damage} skade på ${dragonObject.name}!`
         );
+
+        //trekker fra heltens skade på dragens HP
         dragonObject.currentHP -= hero.damage;
 
+        //oppdaterer dragens HP i teksten
         let dragonHealthTxt = document.querySelector(".dragon-health-txt");
         dragonHealthTxt.innerHTML = `${dragonObject.currentHP} / ${dragonObject.maxHP} HP`;
 
+        //kaller på dragens motangrep
         dragonAttack();
       }
 
+      //dragen angriper
       function dragonAttack() {
+
+        //filtrerer ut heltene som er i live
         let livingHeroes = heroesArray.filter((hero) => hero.alive);
 
+        //kjører kun hvis det er en eller fler helter i live
         if (livingHeroes.length > 0) {
+          
+          //regner ut et tilfeldig tall (1-3) basert på antall levende helter
           let randomNumber = Math.floor(Math.random() * livingHeroes.length);
+
+          //velger en tilfeldig helt basert på det tilfeldige tallet
           let targetHero = livingHeroes[randomNumber];
 
           alert(`${dragonObject.name} har angrepet ${targetHero.name}`);
 
+          //trekker fra dragens skade på helten som ble angrepets HP
           targetHero.currentHP -= dragonObject.damage;
 
           console.log(`${targetHero.name} har nå ${targetHero.currentHP}`);
 
+          //kaller på funksjon som oppdaterer helten som ble angrepets HP
           updateHeroHealthText(targetHero);
 
+          //kjører kun hvis en helts HP er mindre enn eller lik 0
           if (targetHero.currentHP <= 0) {
+
+            //endrer den døde heroens alive property til false
             targetHero.alive = false;
 
+            //går igjennom hver helt 
             heroesArray.forEach((hero) => {
+
+              //kjører kun hvis helten alive property er false
               if (hero.alive === false) {
+
+                //bøtte til å lagre nye navn properties til heltene
                 let heroImageClass;
 
+                //endrer heltenes navn properties for å matche bildecontainerene
                 switch (hero.name) {
                   case "Henriette Healer":
                     heroImageClass = "healer";
@@ -178,9 +206,12 @@
                     break;
                 }
 
+                //velger bildecontaineren til den døde helten
                 let heroEliminated = document.querySelector(
                   `.${heroImageClass}`
                 );
+
+                //fjerner bildecontaineren til den døde helten
                 if (heroEliminated) {
                   heroEliminated.remove();
                 }
@@ -188,18 +219,24 @@
             });
           }
         }
+        //kaller på funksjon som sjekker om alle heltene eller dragen er død
         checkGameState();
       }
 
+      //funksjon som oppdaterer helten som ble angrepets HP tekst 
       function updateHeroHealthText(targetHero) {
+
+        //lager et array med heltenes HP tekst
         const healthTextIds = [
           "healer-health-txt",
           "archer-health-txt",
           "warrior-health-txt",
         ];
 
+        //velger helten som ble angrepet i arrayet
         let healthText = document.getElementById(healthTextIds[targetHero.id]);
 
+        //endrer på helten som ble angrepets current HP tekst
         healthText.innerText = `${targetHero.currentHP} / ${targetHero.maxHP} HP`;
       }
 
@@ -245,14 +282,23 @@
         
       }*/
 
-      //-------------------------
+     //funksjon som sjekker om alle heltene eller dragen er død
       function checkGameState() {
+
+        //sjekker om alle heltenes alive property er false (alle heltene er dødte)
         const allHeroesDead = heroesArray.every((hero) => hero.alive === false);
 
+        //kjører kun hvis alle heltene er døde og dragen lever fortsatt
         if (allHeroesDead && dragonObject.currentHP > 0) {
-          alert(`Spillet er tapt! ${dragonObject.name} har vunnet!`);
+          alert(`Spillet er tapt! ${dragonObject.name} har vunnet☠️`);
+
+          //kjører kun hvis dragen er død
         } else if (dragonObject.currentHP <= 0) {
+
+          //selecter bildet av dragen
           const dragonEliminated = document.querySelector(".dragon");
+
+          //fjerner bildet av dragen
           dragonEliminated.remove();
 
           alert("Gratulerer, du har vunnet spillet🎉");
