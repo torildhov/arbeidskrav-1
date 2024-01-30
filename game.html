@@ -144,6 +144,10 @@
         dragonAttack();
       }
 
+<<<<<<< Updated upstream
+=======
+      //VIRKER, ANGRIPER BARE DE SOM ER I LIVE!
+>>>>>>> Stashed changes
       function dragonAttack() {
         let livingHeroes = heroesArray.filter((hero) => hero.alive);
 
@@ -159,6 +163,7 @@
 
           if (targetHero.currentHP <= 0) {
             targetHero.alive = false;
+<<<<<<< Updated upstream
 
             heroesArray.forEach((hero) => {
               if (hero.alive === false) {
@@ -183,7 +188,16 @@
               }
             });
           }
+=======
+>>>>>>> Stashed changes
         }
+        const deadHeroImg = document.querySelector(
+              `.img-container.${targetHero.name.toLowerCase()}`
+            );
+            if (deadHeroImg) {
+              deadHeroImg.remove();
+            }
+          }
       }
 
       /*function dragonAttack() {
