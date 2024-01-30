@@ -144,10 +144,6 @@
         dragonAttack();
       }
 
-<<<<<<< Updated upstream
-=======
-      //VIRKER, ANGRIPER BARE DE SOM ER I LIVE!
->>>>>>> Stashed changes
       function dragonAttack() {
         let livingHeroes = heroesArray.filter((hero) => hero.alive);
 
@@ -161,9 +157,10 @@
 
           console.log(`${targetHero.name} har nå ${targetHero.currentHP}`);
 
+          updateHeroHealthText(targetHero);
+
           if (targetHero.currentHP <= 0) {
             targetHero.alive = false;
-<<<<<<< Updated upstream
 
             heroesArray.forEach((hero) => {
               if (hero.alive === false) {
@@ -181,23 +178,29 @@
                     break;
                 }
 
-                let heroEl = document.querySelector(`.${heroImageClass}`);
-                if (heroEl) {
-                  heroEl.remove();
+                let heroEliminated = document.querySelector(
+                  `.${heroImageClass}`
+                );
+                if (heroEliminated) {
+                  heroEliminated.remove();
                 }
               }
             });
           }
-=======
->>>>>>> Stashed changes
         }
-        const deadHeroImg = document.querySelector(
-              `.img-container.${targetHero.name.toLowerCase()}`
-            );
-            if (deadHeroImg) {
-              deadHeroImg.remove();
-            }
-          }
+        checkGameState();
+      }
+
+      function updateHeroHealthText(targetHero) {
+        const healthTextIds = [
+          "healer-health-txt",
+          "archer-health-txt",
+          "warrior-health-txt",
+        ];
+
+        let healthText = document.getElementById(healthTextIds[targetHero.id]);
+
+        healthText.innerText = `${targetHero.currentHP} / ${targetHero.maxHP} HP`;
       }
 
       /*function dragonAttack() {
@@ -249,10 +252,10 @@
         if (allHeroesDead && dragonObject.currentHP > 0) {
           alert(`Spillet er tapt! ${dragonObject.name} har vunnet!`);
         } else if (dragonObject.currentHP <= 0) {
-          const dragonEl = document.querySelector(".dragon");
-          dragonEl.remove();
+          const dragonEliminated = document.querySelector(".dragon");
+          dragonEliminated.remove();
 
-          alert("Gratulerer, du har vunnet spillet!");
+          alert("Gratulerer, du har vunnet spillet🎉");
         }
       }
     </script>
