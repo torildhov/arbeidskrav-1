@@ -107,15 +107,8 @@
         alive: true,
       };
 
-      //---------------OPPGAVE 1--------------
 
-      /*Når brukeren trykker på en av heltene, skal helten angripe dragen.
-        - Det skal komme en alert hvor det står: "(Heltens name)" har gjort (heltens damage) skade på (Dragens name)!"
-        - Dragens liv (currentHP) skal bli trukket med heltens damage, avhengig av hvilken helt den ble angrepet av.
-        - Dragens currentHP blir oppdatert i arrayet
-
-        Påkrevde teknikker: alert, function, onclick/eventListener, manipulering av array-objekter*/
-
+      //Henter inn heltene og gjør det mulig å klikke på heltene
       document.querySelector(".healer").addEventListener("click", function () {
         heroAttack(heroesArray[0]);
       });
@@ -128,153 +121,154 @@
         heroAttack(heroesArray[2]);
       });
 
-      function heroAttack(hero) {
-        alert(`${hero.name} har gjort ${hero.damage} på ${dragonObject.name}`);
 
+      //Oppdatering av navnene til heltene og dragen
+      const healerNameTxt = document.getElementById("healer-name-txt");
+      healerNameTxt.innerHTML = `${heroesArray[0].name}`;
+
+      const archerNameTxt = document.getElementById("archer-name-txt");
+      archerNameTxt.innerHTML = `${heroesArray[1].name}`;
+
+      const warriorNameTxt = document.getElementById("warrior-name-txt");
+      warriorNameTxt.innerHTML = `${heroesArray[2].name}`;
+
+      const dragonNameTxt = document.getElementById("dragon-name-txt");
+      dragonNameTxt.innerHTML = `${dragonObject.name}`;
+
+
+      //Helten som klikkes på angriper dragen
+      function heroAttack(hero) {
+        alert(
+          `${hero.name} har gjort ${hero.damage} skade på ${dragonObject.name}!`
+        );
+
+        //trekker fra heltens skade på dragens HP
         dragonObject.currentHP -= hero.damage;
 
+        //oppdaterer dragens HP i teksten
         let dragonHealthTxt = document.querySelector(".dragon-health-txt");
         dragonHealthTxt.innerHTML = `${dragonObject.currentHP} / ${dragonObject.maxHP} HP`;
-<<<<<<< Updated upstream
+
+        //kaller på dragens motangrep
         dragonAttack();
       }
 
-
-      //--------------OPPGAVE 2------------------
-
-      /*Dragen skal gjøre et motangrep umiddelbart når den blir angrepet av en helt.
-
-        - Dragen skal angripe en tilfeldig helt. Det er altså 1/3 sjanse for hver helt å bli angrepet
-        - Dragen skal kun angripe helter som er i live, "alive"-propertien for helten må være true.
-        - Det skal komme en ny alert hvor det står: "(Dragens name) har angrepet (Heltens name)!"
-        - Helten som ble angrepet sitt liv (currentHP) skal bli trukket med dragens damage.
-        - Heltens currentHP blir oddatert i arrayet
-
-        Påkrevde teknikker: alert, function, onclick/eventListener, manipulering av array-objekter, Math.floor, Math.random, if-else/switch/array-metode*/
-
-      const dragon = document.querySelector(".dragon")
-      dragon.onclick = dragonAttack;
-
+      //dragen angriper
       function dragonAttack() {
-       
-        let livingHeroes = heroesArray.filter((hero) => hero.currentHP > 0);
 
-        
-        let randomHero = livingHeroes[Math.floor(Math.random() * livingHeroes.length)];
+        //filtrerer ut heltene som er i live
+        let livingHeroes = heroesArray.filter((hero) => hero.alive);
 
-        
-        alert(`${dragonObject.name} has attacked ${randomHero.name}!`);
+        //kjører kun hvis det er en eller fler helter i live
+        if (livingHeroes.length > 0) {
+          
+          //regner ut et tilfeldig tall (1-3) basert på antall levende helter
+          let randomNumber = Math.floor(Math.random() * livingHeroes.length);
 
-        
-        randomHero.currentHP -= dragonObject.damage;
+          //velger en tilfeldig helt basert på det tilfeldige tallet
+          let targetHero = livingHeroes[randomNumber];
 
-        
-        heroesArray.forEach((hero) => {
-          if (hero.name === randomHero.name) {
-            hero.currentHP = randomHero.currentHP;
-          }
-        });
+          alert(`${dragonObject.name} har angrepet ${targetHero.name}!`);
 
-        console.log(`${randomHero.name} now has ${randomHero.currentHP} HP`);
-      }
+          //trekker fra dragens skade på helten som ble angrepets HP
+          targetHero.currentHP -= dragonObject.damage;
 
-      function checkIfHeroDead(){
-        
-=======
-        dragonAttack(hero);
-      }
+          console.log(`${targetHero.name} har nå ${targetHero.currentHP}`);
 
-      function dragonAttack(hero) {
-        let randomHero =
-          heroesArray[Math.floor(Math.random() * heroesArray.length)];
+          //kaller på funksjon som oppdaterer helten som ble angrepets HP
+          updateHeroHealthText(targetHero);
 
-        if (hero.alive === true) {
-          alert(`${dragonObject.name} har angrepet ${randomHero.name}!`);
+          //kjører kun hvis en helts HP er mindre enn eller lik 0
+          if (targetHero.currentHP <= 0) {
 
-          randomHero.currentHP -= dragonObject.damage;
+            //endrer den døde heroens alive property til false
+            targetHero.alive = false;
 
-          heroesArray.forEach((hero) => {
-            if (hero.name === randomHero.name) {
-              hero.currentHP = randomHero.currentHP;
-            }
-          });
-
-          console.log(`${randomHero.name} har nå ${randomHero.currentHP} HP`);
-        }
-
-        heroesArray.forEach((hero, index) => {
-          if (hero.currentHP <= 0) {
-            const deadHeroName = heroesArray[index].name;
-            alert(`${deadHeroName} er død!`);
-
-            randomHero.alive = false;
-
+            //går igjennom hver helt 
             heroesArray.forEach((hero) => {
-              if (hero.name === randomHero.name) {
-                hero.alive = randomHero.alive;
+
+              //kjører kun hvis helten alive property er false
+              if (hero.alive === false) {
+
+                //bøtte til å lagre nye navn properties til heltene
+                let heroImageClass;
+
+                //endrer heltenes navn properties for å matche bildecontainerene
+                switch (hero.name) {
+                  case "Henriette Healer":
+                    heroImageClass = "healer";
+                    break;
+                  case "Ariana archer":
+                    heroImageClass = "archer";
+                    break;
+                  case "Wyona Warrior":
+                    heroImageClass = "warrior";
+                    break;
+                }
+
+                //velger bildecontaineren til den døde helten
+                let heroEliminated = document.querySelector(
+                  `.${heroImageClass}`
+                );
+
+                //fjerner bildecontaineren til den døde helten
+                if (heroEliminated) {
+                  heroEliminated.remove();
+                }
               }
             });
-
-            const deadHeroImg = document.querySelectorAll(".hero")[index];
-            if (deadHeroImg) {
-              deadHeroImg.remove();
-            }
           }
-        });
-
-        /*heroesArray.forEach((hero, index) => {
-          if (hero.currentHP <= 0) {
-            const deadHeroName = heroesArray[index].name;
-            alert(`${deadHeroName} er død!`);
-
-            heroesArray.splice(index, 1);
-
-            hero.alive = false;
-
-            const deadHeroImg = document.querySelectorAll(".hero")[index];
-            if (deadHeroImg) {
-              deadHeroImg.remove();
-            }
-          }
-        });*/
-
+        }
+        //kaller på funksjon som sjekker om alle heltene eller dragen er død
         checkGameState();
       }
 
+      //funksjon som oppdaterer helten som ble angrepets HP tekst 
+      function updateHeroHealthText(targetHero) {
+
+        //lager et array med heltenes HP tekst
+        const healthTextIds = [
+          "healer-health-txt",
+          "archer-health-txt",
+          "warrior-health-txt",
+        ];
+
+        //velger helten som ble angrepet i arrayet
+        let healthText = document.getElementById(healthTextIds[targetHero.id]);
+
+        //endrer på helten som ble angrepets current HP tekst
+        healthText.innerText = `${targetHero.currentHP} / ${targetHero.maxHP} HP`;
+      }
+
+     //funksjon som sjekker om alle heltene eller dragen er død
       function checkGameState() {
+
+        //sjekker om alle heltenes alive property er false (alle heltene er dødte)
         const allHeroesDead = heroesArray.every((hero) => hero.alive === false);
 
+        //kjører kun hvis alle heltene er døde og dragen lever fortsatt
         if (allHeroesDead && dragonObject.currentHP > 0) {
-          alert(`Spillet er tapt! ${dragonObject.name} har vunnet!`);
+          alert(`Spillet er tapt! ${dragonObject.name} har vunnet☠️`);
+
+          //kjører kun hvis dragen er død
         } else if (dragonObject.currentHP <= 0) {
-          const dragonEl = document.querySelector(".dragon");
-          dragonEl.remove();
 
-          alert("Gratulerer, du har vunnet spillet!");
+          //selecter bildet av dragen
+          const dragonEliminated = document.querySelector(".dragon");
+
+          //fjerner bildet av dragen
+          dragonEliminated.remove();
+
+          alert("Gratulerer, du har vunnet spillet🎉");
         }
->>>>>>> Stashed changes
       }
-      
-      //--------------OPPGAVE 2------------------
 
-      /*Dragen skal gjøre et motangrep umiddelbart når den blir angrepet av en helt.
+      //Fornøyd: at jeg i det hele tatt fikk det til
 
-        - Dragen skal angripe en tilfeldig helt. Det er altså 1/3 sjanse for hver helt å bli angrepet
-        - Dragen skal kun angripe helter som er i live, "alive"-propertien for helten må være true.
-        - Det skal komme en ny alert hvor det står: "(Dragens name) har angrepet (Heltens name)!"
-        - Helten som ble angrepet sitt liv (currentHP) skal bli trukket med dragens damage.
-        - Heltens currentHP blir oddatert i arrayet
+      //Ikke fikk til: skrevet kode som jeg tror det bare er en liten feil i, og sittet i flere dager å knotet med samme ting, for å så finne ut at det var lettere å begynne på nytt og skrive på en helt annen måte
 
-        Påkrevde teknikker: alert, function, onclick/eventListener, manipulering av array-objekter, Math.floor, Math.random, if-else/switch/array-metode*/
-
-
-      //---------------OPPGAVE 3 --------------------
-      /*En helt er død!
-      
-      - Dersom en helt sin currentHP blir 0 eller mindre, skal helten(e) forsvinne fra nettleseren og "alive"-propertien skal bli false. Denne helten er nå død, og dragen vil ikke vurdere å angripe denne helten.
-      - Spillet fortsetter!
-      
-      Påkrevde metoder: function, .remove, if/else/switch/array-metode, manipulering av array-objekter*/
+      //Vanskelig: velge bildecontainerene til heltene og fjerne riktig helt. Prøvde alt mulig annet før switch. 
     </script>
   </body>
 </html>
+
