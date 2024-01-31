@@ -168,7 +168,7 @@
           //velger en tilfeldig helt basert på det tilfeldige tallet
           let targetHero = livingHeroes[randomNumber];
 
-          alert(`${dragonObject.name} har angrepet ${targetHero.name}`);
+          alert(`${dragonObject.name} har angrepet ${targetHero.name}!`);
 
           //trekker fra dragens skade på helten som ble angrepets HP
           targetHero.currentHP -= dragonObject.damage;
@@ -240,48 +240,6 @@
         healthText.innerText = `${targetHero.currentHP} / ${targetHero.maxHP} HP`;
       }
 
-      /*function dragonAttack() {
-        let livingHeroes = heroesArray.filter((hero) => hero.currentHP > 0);
-        if(livingHeroes.length > 0){
-          let randomHero =
-          livingHeroes[Math.floor(Math.random() * livingHeroes.length)];
-
-        alert(`${dragonObject.name} has attacked ${randomHero.name}!`);
-
-        randomHero.currentHP -= dragonObject.damage;
-
-        heroesArray.forEach((hero) => {
-          if (hero.name === randomHero.name) {
-            hero.currentHP = randomHero.currentHP;
-          }
-        });
-
-        console.log(`${randomHero.name} now has ${randomHero.currentHP} HP`);
-      
-
-        livingHeroes.forEach((hero) => {
-          if (randomHero.currentHP <= 0) {
-            
-            //const deadHeroName = heroesArray[index].name;
-            //alert(`${deadHeroName} er død!`);
-            hero.alive = false;
-
-            
-            const deadHeroImg = document.querySelector(`.img-container.${randomHero.name.toLowerCase()}`);
-              if(deadHeroImg) {
-                deadHeroImg.remove();
-              }
-            
-            
-            
-          }
-        });
-        }
-        
-        checkGameState();
-        
-      }*/
-
      //funksjon som sjekker om alle heltene eller dragen er død
       function checkGameState() {
 
@@ -304,6 +262,13 @@
           alert("Gratulerer, du har vunnet spillet🎉");
         }
       }
+
+      //Fornøyd: at jeg i det hele tatt fikk det til
+
+      //Ikke fikk til: skrevet kode som jeg tror det bare er en liten feil i, og sittet i flere dager å knotet med samme ting, for å så finne ut at det var lettere å begynne på nytt og skrive på en helt annen måte
+
+      //Vanskelig: velge bildecontainerene til heltene og fjerne riktig helt. Prøvde alt mulig annet før switch. 
     </script>
   </body>
 </html>
+
