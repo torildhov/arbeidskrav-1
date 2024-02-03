@@ -107,7 +107,6 @@
         alive: true,
       };
 
-
       //Henter inn heltene og gjør det mulig å klikke på heltene
       document.querySelector(".healer").addEventListener("click", function () {
         heroAttack(heroesArray[0]);
@@ -121,7 +120,6 @@
         heroAttack(heroesArray[2]);
       });
 
-
       //Oppdatering av navnene til heltene og dragen
       const healerNameTxt = document.getElementById("healer-name-txt");
       healerNameTxt.innerHTML = `${heroesArray[0].name}`;
@@ -134,7 +132,6 @@
 
       const dragonNameTxt = document.getElementById("dragon-name-txt");
       dragonNameTxt.innerHTML = `${dragonObject.name}`;
-
 
       //Helten som klikkes på angriper dragen
       function heroAttack(hero) {
@@ -155,15 +152,14 @@
 
       //dragen angriper
       function dragonAttack() {
-
         //filtrerer ut heltene som er i live
         let livingHeroes = heroesArray.filter((hero) => hero.alive);
 
         //kjører kun hvis det er en eller fler helter i live
         if (livingHeroes.length > 0) {
-          
-          //regner ut et tilfeldig tall (1-3) basert på antall levende helter
+          //regner ut et tilfeldig tall (0-2) basert på antall helter som har HP over 0
           let randomNumber = Math.floor(Math.random() * livingHeroes.length);
+          console.log(randomNumber);
 
           //velger en tilfeldig helt basert på det tilfeldige tallet
           let targetHero = livingHeroes[randomNumber];
@@ -175,25 +171,22 @@
 
           console.log(`${targetHero.name} har nå ${targetHero.currentHP}`);
 
-          //kaller på funksjon som oppdaterer helten som ble angrepets HP
+          //kaller på funksjon som oppdaterer den angrepede heltens HP
           updateHeroHealthText(targetHero);
 
           //kjører kun hvis en helts HP er mindre enn eller lik 0
           if (targetHero.currentHP <= 0) {
-
             //endrer den døde heroens alive property til false
             targetHero.alive = false;
 
-            //går igjennom hver helt 
+            //går igjennom hver helt
             heroesArray.forEach((hero) => {
-
               //kjører kun hvis helten alive property er false
               if (hero.alive === false) {
-
-                //bøtte til å lagre nye navn properties til heltene
+                //bøtte til å lagre de døde heltenes navn
                 let heroImageClass;
 
-                //endrer heltenes navn properties for å matche bildecontainerene
+                //matcher den døde heltens navn med bildecontaineren til den døde helten
                 switch (hero.name) {
                   case "Henriette Healer":
                     heroImageClass = "healer";
@@ -223,9 +216,8 @@
         checkGameState();
       }
 
-      //funksjon som oppdaterer helten som ble angrepets HP tekst 
+      //funksjon som oppdaterer helten som ble angrepets HP tekst
       function updateHeroHealthText(targetHero) {
-
         //lager et array med heltenes HP tekst
         const healthTextIds = [
           "healer-health-txt",
@@ -233,26 +225,24 @@
           "warrior-health-txt",
         ];
 
-        //velger helten som ble angrepet i arrayet
+        //velger helten som ble angrepet i arrayet basert på id
         let healthText = document.getElementById(healthTextIds[targetHero.id]);
 
         //endrer på helten som ble angrepets current HP tekst
         healthText.innerText = `${targetHero.currentHP} / ${targetHero.maxHP} HP`;
       }
 
-     //funksjon som sjekker om alle heltene eller dragen er død
+      //funksjon som sjekker om alle heltene eller dragen er død
       function checkGameState() {
-
-        //sjekker om alle heltenes alive property er false (alle heltene er dødte)
+        //sjekker om alle heltenes alive property er false (alle heltene er døde)
         const allHeroesDead = heroesArray.every((hero) => hero.alive === false);
 
-        //kjører kun hvis alle heltene er døde og dragen lever fortsatt
+        //kjører kun hvis alle heltene er døde og dragens HP er over 0
         if (allHeroesDead && dragonObject.currentHP > 0) {
           alert(`Spillet er tapt! ${dragonObject.name} har vunnet☠️`);
 
-          //kjører kun hvis dragen er død
+          //kjører kun hvis dragens HP er 0 eller mindre
         } else if (dragonObject.currentHP <= 0) {
-
           //selecter bildet av dragen
           const dragonEliminated = document.querySelector(".dragon");
 
@@ -263,12 +253,11 @@
         }
       }
 
-      //Fornøyd: at jeg i det hele tatt fikk det til
+      //Fornøyd: at jeg i det hele tatt fikk til noe som virker, har knotet masse!
 
       //Ikke fikk til: skrevet kode som jeg tror det bare er en liten feil i, og sittet i flere dager å knotet med samme ting, for å så finne ut at det var lettere å begynne på nytt og skrive på en helt annen måte
 
-      //Vanskelig: velge bildecontainerene til heltene og fjerne riktig helt. Prøvde alt mulig annet før switch. 
+      //Vanskelig: velge bildecontainerene til heltene og fjerne riktig helt. Prøvde alt mulig annet før switch.
     </script>
   </body>
 </html>
-
